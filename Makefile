@@ -1,10 +1,15 @@
+CC:=${RUMPRUN_CC}
+ifeq (${CC},)
+$(error set $$RUMPRUN_CC)
+endif
+
 all: nginx images
 
 .PHONY: nginx
 nginx: nginx/objs/nginx
 
 nginx/objs/nginx: nginx/Makefile
-	$(MAKE) -C nginx CC=rumprun-xen-cc
+	$(MAKE) -C nginx
 
 NGINX_CONF_ENV += \
 	ngx_force_c_compiler=yes \
@@ -20,7 +25,7 @@ NGINX_CONF_ENV += \
 
 NGINX_CONF_OPTS += \
 	--crossbuild=NetBSD \
-	--with-cc=rumprun-xen-cc \
+	--with-cc=${CC} \
 	--prefix=/none \
 	--conf-path=/data/conf/nginx.conf \
 	--sbin-path=/none \
