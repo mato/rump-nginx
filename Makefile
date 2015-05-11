@@ -3,10 +3,11 @@ ifeq (${CC},)
 $(error set $$RUMPRUN_CC)
 endif
 
-all: nginx images
+all: bin/nginx images
 
-.PHONY: nginx
-nginx: nginx/objs/nginx
+bin/nginx: nginx/objs/nginx
+	mkdir -p bin
+	cp $< $@
 
 nginx/objs/nginx: nginx/Makefile
 	$(MAKE) -C nginx
@@ -60,4 +61,5 @@ images/data.iso: images/data/conf/* images/data/www/*
 .PHONY: clean
 clean:
 	$(MAKE) -C nginx clean
+	rm -f bin/nginx
 	rm -f images/stubetc.iso images/data.iso
