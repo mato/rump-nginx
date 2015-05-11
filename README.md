@@ -1,4 +1,4 @@
-# rump-php
+# rump-nginx
 
 ## What is this?
 
@@ -11,29 +11,29 @@ cross-compilation support for Nginx.
 
 ## Trying it out
 
-_TODO: Update these instructions for the php/nginx split_
-
 To play with this, build rumprun for Xen according to the
-[instructions](http://wiki.rumpkernel.org/Repo%3A-rumprun#xen) and add the
+[instructions](http://wiki.rumpkernel.org/Repo%3A-rumprun) and add the
 `app-tools` directory to your `$PATH`. 
 
 You will also need to install:
 * `genisoimage`, to build the data images for the domUs.
 
-You will need a working Xen network set up, and two IP addresses for the demo.
-One will be used by the Xen domU running the HTTP server, the other by the domU
-running PHP serving FastCGI.
+To build the nginx unikernel and data images, run:
+````
+RUMPRUN_CC=rumprun-xen-cc make
+````
 
-1. Edit `run_nginx.sh` and `run_php.sh`, replacing the IP addresses used as
-   appropriate.
-2. Edit `images/data/conf/nginx.conf` replacing the IP address in
-   `fastcgi_pass` to match the IP you will use for the PHP domU.
-3. Run `RUMPRUN_CC=rumprun-xen-cc make` to build the Unikernels and data images.
-4. As root on your Xen dom0, run `./run_nginx.sh` in one window and
-   `./run_php.sh` in another.
-5. Browse to http://_nginx domU_/.
+The resulting unikernel will be left in `bin/nginx`.
+
+To start a domU running nginx, as root run (for example):
+
+````
+rumprun xen -M 128 -di \
+    -n inet,static,10.10.10.10/24 \
+    -b images/stubetc.iso,/etc \
+    -b images/data.iso,/data \
+    -- bin/nginx -c /data/conf/nginx.conf
+````
 
 Comments, questions, criticism welcome at the Rump Kernel mailing list or IRC:
 http://wiki.rumpkernel.org/Info:-Community
-
-
