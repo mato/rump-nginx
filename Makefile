@@ -54,7 +54,7 @@ images: images/stubetc.iso images/data.iso
 images/stubetc.iso: images/stubetc/*
 	genisoimage -l -r -o images/stubetc.iso images/stubetc
 
-images/data.iso: images/data/conf/* images/data/www/* images/data/www/static/*
+images/data.iso: images/data/conf/* images/data/www/*
 	genisoimage -l -r -o images/data.iso images/data
 
 .PHONY: clean
