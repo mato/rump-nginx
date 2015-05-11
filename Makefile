@@ -38,7 +38,8 @@ NGINX_CONF_OPTS += \
 	--http-fastcgi-temp-path=/tmp/fastcgi \
 	--http-scgi-temp-path=/tmp/scgi \
 	--http-uwsgi-temp-path=/tmp/uwsgi \
-	--without-http_rewrite_module
+	--without-http_rewrite_module \
+	--with-ipv6
 
 nginx/Makefile: nginx/src
 	(cd nginx; $(NGINX_CONF_ENV) ./configure $(NGINX_CONF_OPTS))
